@@ -7,7 +7,8 @@ import { ToastAndroid } from "react-native"
 import { initialization } from "./store/slices/stateReducer"
 import { setToastAndroidMessage } from "./store/slices/stateReducer"
 import Home from "./screens/Home"
-import Txt from "./components/custom/Txt"
+import PassList from "./screens/PassList"
+import PasswordDetails from "./screens/PasswordDetails"
 
 export default function Main() {
     const { toastAndroidMessage } = useSelector((s: any) => s.state)
@@ -29,12 +30,16 @@ export default function Main() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                initialRouteName="home"
+            >
 
                 <Stack.Group
-                    screenOptions={{ headerShown: false }}
+                // screenOptions={{ headerShown: false }}
                 >
                     <Stack.Screen name="home" component={Home} />
+                    <Stack.Screen name="passList" component={PassList} />
+                    <Stack.Screen name="password" component={PasswordDetails} />
                 </Stack.Group>
 
             </Stack.Navigator>

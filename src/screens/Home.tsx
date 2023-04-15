@@ -1,15 +1,18 @@
-import { StyleSheet, View, } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
 
 import Container from "../components/reusable/Container";
 import Txt from "../components/custom/Txt";
+import { useNavigation } from "@react-navigation/native";
+import HomeBtn from "../components/native/HomeBtn";
 
 export default function Home() {
+    const nav = useNavigation()
 
     return (
         <Container>
             <View style={styles.wrapper}>
-                <Txt>hello</Txt>
-
+                <HomeBtn screen="passList" title="Пароли" />
             </View>
         </Container >
     )
@@ -17,8 +20,5 @@ export default function Home() {
 
 const styles = StyleSheet.create({
     wrapper: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: .85
     },
 })
