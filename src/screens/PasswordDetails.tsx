@@ -8,20 +8,20 @@ interface Params {
             password: '',
             uri: '',
             login: '',
-            src: ''
+            title: ''
         }
     }
 }
 
 export default function PasswordDetails({ route }: Params) {
-    const { password, uri, login, src } = route.params
+    const { password, uri, login, title } = route.params
     return (
         <View style={styles.container}>
             <View style={styles.item}>
                 <View style={styles.labelBox}>
                     <Txt style={styles.itemLabel}>Источник</Txt>
                 </View>
-                <Txt style={styles.itemTxt}>{src}</Txt>
+                <Txt style={styles.itemTxt}>{title}</Txt>
             </View>
             <View style={styles.item}>
                 <View style={styles.labelBox}>

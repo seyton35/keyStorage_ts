@@ -21,37 +21,30 @@ const stateSlice = createSlice({
     initialState: {
         version: '1.0.0',
         toastAndroidMessage: null,
-        passList: [
-            {
-                src: 'google',
-                uri: 'https://google.com',
-                password: 'qwerty',
-                login: 'user2000',
-            },
-            {
-                src: 'yandex',
-                uri: 'https://yandex.com',
-                password: 'qwerty22',
-                login: 'user2000',
-            },
-            {
-                src: 'mail',
-                uri: 'https://mail.com',
-                password: 'qwerty44',
-                login: 'user2000',
-            },
-        ]
+        error: null,
+        passList: []
     },
     reducers: {
         setToastAndroidMessage: (state, action) => {
             state.toastAndroidMessage = action.payload
         },
+        setError: (state, action) => {
+            state.error = action.payload
+        },
+        addPassword: (state, action) => {
+            const arr = state.passList.map(el => el)
+            arr.push(action.payload)
+            state.passList = arr
+            console.log('state.passList', state.passList)
+        }
     },
     extraReducers: builder => { }
 })
 
 export const {
+    addPassword,
     setToastAndroidMessage,
+    setError
 } = stateSlice.actions
 
 

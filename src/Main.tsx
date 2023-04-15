@@ -9,6 +9,7 @@ import { setToastAndroidMessage } from "./store/slices/stateReducer"
 import Home from "./screens/Home"
 import PassList from "./screens/PassList"
 import PasswordDetails from "./screens/PasswordDetails"
+import AddPassword from "./screens/AddPassword"
 
 export default function Main() {
     const { toastAndroidMessage } = useSelector((s: any) => s.state)
@@ -40,6 +41,7 @@ export default function Main() {
                     <Stack.Screen name="home" component={Home} />
                     <Stack.Screen name="passList" component={PassList} />
                     <Stack.Screen name="password" component={PasswordDetails} />
+                    <Stack.Screen name="addPass" component={AddPassword} />
                 </Stack.Group>
 
             </Stack.Navigator>
