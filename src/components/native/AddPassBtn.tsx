@@ -12,7 +12,7 @@ export default function AddPassBtn({ style }: Params) {
         <TouchableOpacity style={[styles.bnt, style]}
             onPress={() => navigate('addPass')}
         >
-            <Txt style={styles.btnTxt}>Добавить пароль</Txt>
+            <Txt style={styles.btnTxt}>Добавить</Txt>
         </TouchableOpacity>
     )
 }
