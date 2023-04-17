@@ -50,6 +50,24 @@ export const updatePassField = createAsyncThunk(
     }
 )
 
+export const deletePassword = createAsyncThunk(
+    'state/deletePassword',
+    async ({ index }, { getState ,dispatch}) => {
+        try {
+            const passList = getState().state.passList.map(el => el)
+            const arr = []
+            passList.splice(index, index)
+            dispatch(setPassList(passList))
+            await EncryptedStorage.setItem(
+                "passList",
+                JSON.stringify(passList)
+            );
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+)
+
 const stateSlice = createSlice({
     name: 'state',
     initialState: {
