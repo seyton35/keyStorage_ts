@@ -12,7 +12,6 @@ export const initialization = createAsyncThunk(
                 const data = await JSON.parse(passList)
                 dispatch(setPassList(data))
             }
-            console.log(2);
         } catch (e) {
             console.log(e.message);
         }
@@ -24,6 +23,23 @@ export const safePassList = createAsyncThunk(
     async (_, { getState }) => {
         try {
             const { passList } = getState().state
+            await EncryptedStorage.setItem(
+                "passList",
+                JSON.stringify(passList)
+            );
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+)
+
+export const updatePassField = createAsyncThunk(
+    'state/updatePassField',
+    async ({ index, value, key }, { getState }) => {
+        try {
+            const { passList } = getState().state
+            passList[index][key] = value
+
             await EncryptedStorage.setItem(
                 "passList",
                 JSON.stringify(passList)
@@ -57,11 +73,6 @@ const stateSlice = createSlice({
         setPassList: (state, action) => {
             state.passList = action.payload
         },
-        updatePassField: (state, action) => {
-            const { index, value, key } = action.payload
-            state.passList[index][key] = value
-        },
-
     },
     extraReducers: builder => { }
 })
@@ -71,7 +82,6 @@ export const {
     setToastAndroidMessage,
     setError,
     setPassList,
-    updatePassField
 } = stateSlice.actions
 
 
