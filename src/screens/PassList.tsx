@@ -20,7 +20,7 @@ export default function PassList({ }: Params) {
                 {passList.length
                     ? passList.map((pass: any, index: number) => {
                         return (
-                            <PasswordItemBtn key={index} title={pass.title} details={pass} />
+                            <PasswordItemBtn key={index} title={pass.title} details={{...pass, index}} />
                         )
                     })
                     : <View style={styles.isListEmpty}>
@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         backgroundColor: '#ccc'
     },
-    isListEmpty:{
-        padding:10
+    isListEmpty: {
+        padding: 10
     },
-    isListEmptyTxt:{
-        fontSize:15
+    isListEmptyTxt: {
+        fontSize: 15
     },
-    
+
 })

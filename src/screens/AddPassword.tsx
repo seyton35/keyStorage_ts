@@ -1,11 +1,12 @@
 import { StyleSheet, View } from 'react-native'
-import AddPassFormItem from '../components/native/AddPassFormItem'
 import { useState } from 'react'
-import SubmitBtn from '../components/native/SubmitBtn'
 import { useDispatch, useSelector } from 'react-redux'
-import ErrorView from '../components/native/ErrorView'
-import { addPassword, setError } from '../store/slices/stateReducer'
 import { useNavigation } from '@react-navigation/native'
+
+import { addPassword, initialization, safePassList, setError } from '../store/slices/stateReducer'
+import SubmitBtn from '../components/native/SubmitBtn'
+import AddPassFormItem from '../components/native/AddPassFormItem'
+import ErrorView from '../components/native/ErrorView'
 
 interface Params {
 
@@ -24,13 +25,14 @@ export default function AddPassword({ }: Params) {
     const dispatch = useDispatch()
 
     function onSubmitHandler() {
-        if (title !== '' || url !== '' || login !== '' || password !== '') {
+        if (title !== '') {
             dispatch(addPassword({
                 title, url, login, password
             }))
+            dispatch(safePassList())
             nav.navigate('passList')
         } else {
-            dispatch(setError('хотя бы одно поле должно быть заполнено'))
+            dispatch(setError('хотя бы название должно быть заполнено'))
             setTimeout(() => {
                 dispatch(setError(null))
             }, 4000);
@@ -57,6 +59,12 @@ export default function AddPassword({ }: Params) {
                 title='готово'
                 onPress={onSubmitHandler}
             />
+            <SubmitBtn
+                title='log'
+                onPress={() => {
+                    dispatch(initialization())
+                }}
+            />
         </View>
     )
 }
@@ -74,6 +82,6 @@ const styles = StyleSheet.create({
     submitBtn: {
         marginTop: 10,
         marginRight: 20,
-        backgroundColor:'#ccc'
+        backgroundColor: '#ccc'
     }
 })
