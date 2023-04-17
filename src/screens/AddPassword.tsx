@@ -60,8 +60,10 @@ export default function AddPassword({ }: Params) {
                 onPress={onSubmitHandler}
             />
             <SubmitBtn
-                title='log'
+                title='logoc'
                 onPress={() => {
+                    console.log(1);
+                    
                     dispatch(initialization())
                 }}
             />
