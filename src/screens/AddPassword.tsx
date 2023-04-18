@@ -11,6 +11,7 @@ import Logo from '../components/native/Logo'
 import Modal from '../components/reusable/Modal'
 import { accountsLogo_48x48 } from '../../assets/accountsLogo_48x48'
 import PassIconsBtnList from '../components/native/PassIconsBtnList'
+import Txt from '../components/custom/Txt'
 
 interface Params {
 
@@ -61,6 +62,7 @@ export default function AddPassword({ }: Params) {
                 onPress={() => setModalVisible(true)}
             >
                 <Logo style={styles.passIcon} title={icon} />
+                <Txt>Сменить иконку</Txt>
             </TouchableOpacity>
 
             <AddPassFormItem style={styles.formItem}
@@ -107,8 +109,8 @@ const styles = StyleSheet.create({
     },
     changeIconBtn: {
         flexDirection: 'row',
-        paddingVertical: 10,
         backgroundColor: '#fff',
+        marginBottom: 10,
         alignItems: 'center'
     },
     passIcon: {
