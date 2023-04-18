@@ -38,10 +38,16 @@ export default function Main() {
                 <Stack.Group
                 // screenOptions={{ headerShown: false }}
                 >
-                    <Stack.Screen name="home" component={Home} />
-                    <Stack.Screen name="passList" component={PassList} />
+                    <Stack.Screen name="home" component={Home}
+                        options={{ title: 'Key storage' }}
+                    />
+                    <Stack.Screen name="passList" component={PassList}
+                        options={{ title: 'Пароли' }}
+                    />
                     <Stack.Screen name="password" component={PasswordDetails} />
-                    <Stack.Screen name="addPass" component={AddPassword} />
+                    <Stack.Screen name="addPass" component={AddPassword}
+                        options={{ title: 'Новый пароль' }}
+                    />
                 </Stack.Group>
 
             </Stack.Navigator>

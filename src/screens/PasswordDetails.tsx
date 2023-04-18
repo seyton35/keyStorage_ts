@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -6,6 +6,9 @@ import { useDispatch } from 'react-redux'
 
 import DetailsEditableItem from '../components/native/DetailsEditableItem'
 import { setToastAndroidMessage, updatePassField } from '../store/slices/stateReducer'
+import { useNavigation } from '@react-navigation/native'
+import Txt from '../components/custom/Txt'
+import Logo from '../components/native/Logo'
 
 interface Params {
     route: {
@@ -15,12 +18,13 @@ interface Params {
             url: string,
             login: string,
             title: string,
-            index: number
+            index: number,
+            icon: string
         }
     }
 }
 
-export default function PasswordDetails({ route }: Params) {
+export default function PasswordDetails({ route, }: Params) {
     const [title, setTitle] = useState(route.params.title)
     const [url, setUrl] = useState(route.params.url)
     const [login, setLogin] = useState(route.params.login)
@@ -28,6 +32,11 @@ export default function PasswordDetails({ route }: Params) {
     const [showPassword, setShowPassword] = useState(false)
 
     const dispatch = useDispatch()
+    const nav = useNavigation()
+
+    useEffect(() => {
+        nav.setOptions({ headerTitle: Header })
+    }, [])
 
     const updateValue = (key: string, value: string) => {
         const { index } = route.params
@@ -52,6 +61,15 @@ export default function PasswordDetails({ route }: Params) {
         } else {
             openLink('https://' + url)
         }
+    }
+
+    function Header() {
+        return (
+            <View style={styles.header}>
+                <Logo title={route.params.icon} size={30} />
+                <Txt style={styles.headerTitle}>{title}</Txt>
+            </View>
+        )
     }
 
     return (
@@ -79,6 +97,15 @@ export default function PasswordDetails({ route }: Params) {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerTitle: {
+        fontSize: 20,
+        marginLeft:10
+    },
+
     container: {
         flex: 1,
     },
