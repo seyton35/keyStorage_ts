@@ -1,22 +1,29 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 
-import { addPassword, initialization, safePassList, setError } from '../store/slices/stateReducer'
+import { addPassword, safePassList, setError } from '../store/slices/stateReducer'
 import SubmitBtn from '../components/native/SubmitBtn'
 import AddPassFormItem from '../components/native/AddPassFormItem'
 import ErrorView from '../components/native/ErrorView'
+import Logo from '../components/native/Logo'
+import Modal from '../components/reusable/Modal'
+import { accountsLogo_48x48 } from '../../assets/accountsLogo_48x48'
+import PassIconsBtnList from '../components/native/PassIconsBtnList'
 
 interface Params {
 
 }
 
 export default function AddPassword({ }: Params) {
+    const [icon, setIcon] = useState('')
     const [title, setTitle] = useState('')
     const [url, setUrl] = useState('')
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
+
+    const [modalVisible, setModalVisible] = useState(false)
 
     const { error } = useSelector((s: any) => s.state)
 
@@ -27,7 +34,7 @@ export default function AddPassword({ }: Params) {
     function onSubmitHandler() {
         if (title !== '') {
             dispatch(addPassword({
-                title, url, login, password
+                title, url, login, password, icon
             }))
             dispatch(safePassList())
             nav.navigate('passList')
@@ -42,6 +49,20 @@ export default function AddPassword({ }: Params) {
     return (
         <View style={styles.container}>
             <ErrorView text={error} />
+            <Modal visible={modalVisible} setUnvisible={() => setModalVisible(false)}>
+                <PassIconsBtnList icon={icon} iconList={Object.keys(accountsLogo_48x48)}
+                    setIcon={(icon: string) => {
+                        setIcon(icon)
+                        setModalVisible(false)
+                    }}
+                />
+            </Modal>
+            <TouchableOpacity style={styles.changeIconBtn}
+                onPress={() => setModalVisible(true)}
+            >
+                <Logo style={styles.passIcon} title={icon} />
+            </TouchableOpacity>
+
             <AddPassFormItem style={styles.formItem}
                 value={title} onChangeText={setTitle} title='Название'
             />
@@ -59,14 +80,6 @@ export default function AddPassword({ }: Params) {
                 title='готово'
                 onPress={onSubmitHandler}
             />
-            <SubmitBtn
-                title='logoc'
-                onPress={() => {
-                    console.log(1);
-                    
-                    dispatch(initialization())
-                }}
-            />
         </View>
     )
 }
@@ -75,6 +88,31 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10
+    },
+    iconBtnList: {
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 20
+
+    },
+    iconBtn: {
+        padding: 5
+    },
+    icon: {
+        width: 50,
+        height: 50,
+    },
+    changeIconBtn: {
+        flexDirection: 'row',
+        paddingVertical: 10,
+        backgroundColor: '#fff',
+        alignItems: 'center'
+    },
+    passIcon: {
+        margin: 10
     },
     formItem: {
         marginBottom: 10,
