@@ -1,5 +1,4 @@
 import { Image, ImageStyle, ViewStyle, StyleSheet, View } from 'react-native'
-
 import { accountsLogo_48x48 as logos } from '../../../assets/accountsLogo_48x48'
 
 interface Params {
@@ -31,9 +30,7 @@ export default function Logo({ title, size = 30, style, iconStyle }: Params) {
 }
 
 const styles = StyleSheet.create({
-    logoBox: {
-
-    },
+    logoBox: {},
     logo: {
         borderRadius: 10,
         backgroundColor: '#fff'

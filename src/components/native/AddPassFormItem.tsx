@@ -10,11 +10,11 @@ interface Params {
 }
 
 export default function AddPassFormItem({ title, onChangeText, value, style }: Params) {
-    const textInput = useRef()
+    const textInput = useRef<TextInput>(null)
 
     return (
         <Pressable style={[styles.inputBox, style]}
-            onPress={() => textInput.current.focus()}
+            onPress={() => textInput.current?.focus()}
         >
             <Txt style={styles.inputLabel}>{title}</Txt>
             <TextInput ref={textInput} style={styles.inputTxt} onChangeText={onChangeText} value={value} />

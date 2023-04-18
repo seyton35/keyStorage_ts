@@ -35,10 +35,11 @@ export const safePassList = createAsyncThunk(
 
 export const updatePassField = createAsyncThunk(
     'state/updatePassField',
-    async ({ index, value, key }, { getState }) => {
+    async ({ index, value, key }, { getState, dispatch }) => {
         try {
             const { passList } = getState().state
             passList[index][key] = value
+            dispatch(setPassList(passList.map(el => el)))
 
             await EncryptedStorage.setItem(
                 "passList",
@@ -52,11 +53,11 @@ export const updatePassField = createAsyncThunk(
 
 export const deletePassword = createAsyncThunk(
     'state/deletePassword',
-    async ({ index }, { getState ,dispatch}) => {
+    async ({ index }, { getState, dispatch }) => {
         try {
             const passList = getState().state.passList.map(el => el)
-            const arr = []
             passList.splice(index, index)
+            
             dispatch(setPassList(passList))
             await EncryptedStorage.setItem(
                 "passList",

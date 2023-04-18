@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { StyleSheet, TextInput, TouchableOpacity, View, Vibration } from 'react-native'
-import Txt from '../custom/Txt'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { useDispatch } from 'react-redux'
+
 import { setToastAndroidMessage } from '../../store/slices/stateReducer'
+import Txt from '../custom/Txt'
 
 interface Params {
     value: string,
@@ -39,9 +40,14 @@ export default function DetailsEditableItem({
     }
 
     const copyToClipboard = () => {
-        Clipboard.setString(value)
-        dispatch(setToastAndroidMessage('скопировано'))
-        Vibration.vibrate(100)
+        if (value !== '') {
+            Clipboard.setString(value)
+            dispatch(setToastAndroidMessage('скопировано'))
+            Vibration.vibrate(100)
+        } else {
+            dispatch(setToastAndroidMessage('пустое поле!'))
+            Vibration.vibrate(300)
+        }
     }
 
     const editValue = () => {
@@ -77,7 +83,7 @@ export default function DetailsEditableItem({
                 />
                 : <Txt style={[styles.itemTxt, isHyperLink()]}>
                     {password
-                        ? '********'
+                        ? '••••••••'
                         : cutText(value)
                     }
                 </Txt>
