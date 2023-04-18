@@ -1,11 +1,11 @@
-import { Linking, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
-import Txt from '../components/custom/Txt'
-import { useState, useRef } from 'react'
-import DetailsEditableItem from '../components/native/DetailsEditableItem'
+import { useState } from 'react'
+import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useDispatch } from 'react-redux'
-import { updatePassField } from '../store/slices/stateReducer'
+
+import DetailsEditableItem from '../components/native/DetailsEditableItem'
+import { setToastAndroidMessage, updatePassField } from '../store/slices/stateReducer'
 
 interface Params {
     route: {
@@ -30,16 +30,36 @@ export default function PasswordDetails({ route }: Params) {
     const dispatch = useDispatch()
 
     const updateValue = (key: string, value: string) => {
-        dispatch(updatePassField({ index: route.params.index, key, value }))
+        const { index } = route.params
+        dispatch(updatePassField({ index, key, value }))
+    }
+
+    function handleLinking(url: string) {
+        function openLink(url: string) {
+            try {
+                Linking.openURL(url)
+            } catch (e: any) {
+                console.log(e.message);
+                dispatch(setToastAndroidMessage('не удалось открыть ссылку'))
+            }
+        }
+        const reg_proto = /https?:\/\//
+        if (url === '') {
+            dispatch(setToastAndroidMessage('нет ссылки'))
+        }
+        if (url.match(reg_proto)) {
+            openLink(url)
+        } else {
+            openLink('https://' + url)
+        }
     }
 
     return (
         <View style={styles.container}>
-
             <DetailsEditableItem title='Название' value={title} onChangeText={setTitle} onEndEditing={() => updateValue('title', title)} />
             <DetailsEditableItem title='Сайт' value={url} onChangeText={setUrl} onEndEditing={() => updateValue('url', url)} hyperLink >
                 <TouchableOpacity style={styles.iconBtn}
-                    onPress={() => Linking.openURL(url)}
+                    onPress={() => handleLinking(url)}
                 >
                     <AntDesign style={styles.icon} name='earth' />
                 </TouchableOpacity>
