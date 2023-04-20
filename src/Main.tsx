@@ -10,6 +10,8 @@ import Home from "./screens/Home"
 import PassList from "./screens/PassList"
 import PasswordDetails from "./screens/PasswordDetails"
 import AddPassword from "./screens/AddPassword"
+import EditCategory from "./screens/EditCategory"
+import CategoryList from "./screens/CategoryList"
 
 export default function Main() {
     const { toastAndroidMessage } = useSelector((s: any) => s.state)
@@ -47,6 +49,12 @@ export default function Main() {
                     <Stack.Screen name="password" component={PasswordDetails} />
                     <Stack.Screen name="addPass" component={AddPassword}
                         options={{ title: 'Новый пароль' }}
+                    />
+                    <Stack.Screen name="editCategory" component={EditCategory}
+                        options={{ title: 'Редактор категорий' }}
+                    />
+                    <Stack.Screen name="categoryList" component={CategoryList}
+                        options={{ title: 'Категории' }}
                     />
                 </Stack.Group>
 
