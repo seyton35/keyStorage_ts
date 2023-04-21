@@ -58,11 +58,11 @@ export const updatePassField = createAsyncThunk(
 
 export const updateCategory = createAsyncThunk(
     'state/updateCategory',
-    async ({ index, title, fields, icon }, { getState, dispatch }) => {
+    async ({ index, category }, { getState, dispatch }) => {
         try {
-            const { categoryList } = getState().state
-            categoryList[index][key] = { title, fields, icon }
-            dispatch(setCategoryList(categoryList.map(el => el)))
+            const categoryList = getState().state.categoryList.map(el => el)
+            categoryList[index] = category
+            dispatch(setCategoryList(categoryList))
 
             await EncryptedStorage.setItem(
                 "categoryList",
@@ -94,11 +94,10 @@ export const deletePassword = createAsyncThunk(
 
 export const deleteCategory = createAsyncThunk(
     'state/deleteCategory',
-    async ({ index }, { getState, dispatch }) => {
+    async (index, { getState, dispatch }) => {
         try {
             const categoryList = getState().state.categoryList.map(el => el)
             categoryList.splice(index, index)
-
             dispatch(setCategoryList(categoryList))
             await EncryptedStorage.setItem(
                 "categoryList",
@@ -131,17 +130,7 @@ const stateSlice = createSlice({
         toastAndroidMessage: null,
         error: null,
         passList: [],
-        categoryList: [
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "bank", "title": "Банковские карты" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "key", "title": "пароли" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "bank", "title": "Банк" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "profile", "title": "услуги" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "youtube", "title": "фильмы" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "steam", "title": "игры" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "facebook", "title": "сайты" },
-            { "fields": [{ "secure": false, "title": "Номер" }], "icon": "tiktok", "title": "ТВ" },
-
-        ]
+        categoryList: []
     },
     reducers: {
         setToastAndroidMessage: (state, action) => {
@@ -152,7 +141,7 @@ const stateSlice = createSlice({
         },
         addPassword: (state, action) => {
             const arr = state.passList.map(el => el)
-            arr.push({...action.payload, _id:genIdOfArray(arr)})
+            arr.push({ ...action.payload, _id: genIdOfArray(arr) })
             state.passList = arr
         },
         setPassList: (state, action) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,16 +15,26 @@ import { addCategory, deleteCategory, saveCategoryList, setError, updateCategory
 import ErrorView from '../components/native/ErrorView'
 
 interface Params {
-    edit?: boolean,
-    index?: number
+    route: {
+        params: {
+            edit?: boolean,
+            index?: number,
+            body?: {
+                _id: string,
+                title: string,
+                icon: string,
+                fields: [],
+            }
+        }
+    }
 }
 interface FieldType { title: string, secure: boolean }
 
-export default function EditCategory({ edit, index }: Params) {
+export default function EditCategory({ route }: Params) {
     const [modalVisible, setModalVisible] = useState(false)
-    const [icon, setIcon] = useState('key')
-    const [title, setTitle] = useState('')
-    const [fields, setFields] = useState<FieldType[]>([{ title: '', secure: false }])
+    const [icon, setIcon] = useState(route.params?.body?.icon || '')
+    const [title, setTitle] = useState(route.params?.body?.title || '')
+    const [fields, setFields] = useState<FieldType[]>(route.params?.body?.fields || [{ title: '', secure: false }])
     const { error } = useSelector((s: any) => s.state)
 
     const dispatch = useDispatch()
@@ -45,7 +55,8 @@ export default function EditCategory({ edit, index }: Params) {
                 newFields.push(field)
             }
         })
-        setFields(newFields)
+        console.log('newFields', newFields)
+        setFields(newFields.map(el => el))
     }
 
     function setFieldsProp(prop: string, value: string | boolean, index: number) {
@@ -69,7 +80,7 @@ export default function EditCategory({ edit, index }: Params) {
                     }
                 }
                 if (nonEmpty) {
-                    if (edit) dispatch(updateCategory(index, title, fields, icon,))
+                    if (route.params?.edit) dispatch(updateCategory({ index: route.params.index, category: { title, fields, icon } }))
                     else dispatch(addCategory({ title, fields, icon }))
                     dispatch(saveCategoryList())
                     navigation.navigate('home')
@@ -96,8 +107,8 @@ export default function EditCategory({ edit, index }: Params) {
     }
 
     function removeCategory() {
-        if (edit) {
-            dispatch(deleteCategory(index))
+        if (route.params?.edit) {
+            dispatch(deleteCategory(route.params.index))
         }
         navigation.navigate('categoryList')
     }
@@ -160,7 +171,10 @@ export default function EditCategory({ edit, index }: Params) {
                         setTitle={(title) => setFieldsProp('title', title, index)}
                         secure={field.secure}
                         setSequre={(flag) => setFieldsProp('secure', flag, index)}
-                        onDeleteField={() => deleteField(index)}
+                        onDeleteField={() => {
+                            console.log('index', index)
+                            deleteField(index)
+                        }}
                     />
                 )
             })
@@ -172,14 +186,6 @@ export default function EditCategory({ edit, index }: Params) {
                 <FontAwesome style={styles.addFieldIcon} name='plus' />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.addFieldBtn}
-                onPress={() => {
-                    console.log('title', title)
-                    saveCategoryBtnHandler()
-                }}
-            >
-                <FontAwesome style={styles.addFieldIcon} name='check' />
-            </TouchableOpacity>
         </ScrollView>
     )
 }

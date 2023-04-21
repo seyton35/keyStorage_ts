@@ -1,8 +1,6 @@
 import { StyleSheet, View, TextInput, TouchableOpacity, } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
-import Input from '../components/custom/Input'
-
 
 interface Params {
     title: string
@@ -16,7 +14,7 @@ export default function EditCategoryItem({ title, setTitle, secure, setSequre, o
     return (
         <View style={styles.categoryItem}>
 
-            <Input style={styles.input} value={title} onChangeText={setTitle} />
+            <TextInput style={styles.input} value={title} onChangeText={setTitle} />
 
             <TouchableOpacity style={styles.checkboxBtn} onPress={() => setSequre(!secure)}>
                 <MaterialIcons style={styles.checkboxIcon} name={
