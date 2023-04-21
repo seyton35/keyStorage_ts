@@ -13,6 +13,7 @@ export default function Home() {
         <Container>
             <View style={styles.wrapper}>
                 <HomeBtn screen="passList" title="Пароли" />
+                <HomeBtn screen="categoryList" title="Категории" />
             </View>
         </Container >
     )
