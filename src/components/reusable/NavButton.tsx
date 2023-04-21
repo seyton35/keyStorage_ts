@@ -1,34 +1,43 @@
-import { TouchableOpacity, StyleSheet } from "react-native"
-import { useNavigation } from "@react-navigation/native"
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import Txt from "../custom/Txt"
+import Txt from '../custom/Txt'
 
-interface Props {
-    style: {},
-    title: string,
+interface Params {
+    title?: string
+    children?: React.ReactNode
     route: string
+    params?: {}
+    style?: {}
+    textStyle?: {}
 }
 
-export default function NavButton({ title, route, style }: Props) {
-    const { navigate } = useNavigation()
+export default function NavButton({ title, children, route, params, textStyle, style }: Params) {
+    const navigate = useNavigation().navigate
+
+    function navBtnHandler() {
+        if (params) {
+            navigate(route, { params })
+        } else navigate(route)
+    }
+
     return (
-        <TouchableOpacity style={[styles.btn, style]} onPress={() => navigate(route)}>
-            <Txt style={styles.btnTxt}>{title}</Txt>
+        <TouchableOpacity style={[styles.bnt, style]}
+            onPress={navBtnHandler}
+        >
+            {title && <Txt style={[styles.btnTxt, textStyle]}>{title}</Txt>}
+            {children}
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    btn: {
-        backgroundColor: '#f5835f',
-        padding: 12,
-        borderRadius: 10,
+    bnt: {
+        padding: 10,
         alignItems: 'center',
-        width: '65%',
-        alignSelf: 'center'
+        backgroundColor: '#fff'
     },
     btnTxt: {
-        fontSize: 20,
-        color: '#fff'
+        fontSize: 17
     }
 })
